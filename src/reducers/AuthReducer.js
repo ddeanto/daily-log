@@ -2,7 +2,8 @@ const INITIAL_STATE = {
   email: '',
   password: '',
   error: '',
-  loading: false
+  loading: false,
+  user: null
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -14,7 +15,7 @@ export default (state = INITIAL_STATE, action) => {
     case 'login_user_attempt':
       return { ...state, error: '', loading: true };
     case 'login_user_success':
-      return state;
+      return { ...state, user: action.payload };
     case 'login_user_fail':
       return { INITIAL_STATE, error: 'wrong' };
     default:
