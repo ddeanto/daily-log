@@ -64,7 +64,7 @@ export const createItemAttempt = (itemType, itemDetails) => {
     dispatch({ type: 'create_item_attempt' });
 
     firebase.database().ref(`/users/${currentUser.uid}/items`)
-      .push({ itemType, itemDetails })
+      .push({ itemType, itemDetails, date: new Date().toString() })
       .then(() => {
         dispatch({ type: 'create_item_success' });
         Actions.itemList();
