@@ -2,24 +2,46 @@ import React, { Component } from 'react';
 import { Picker, Text, View } from 'react-native';
 import { AutoGrowingTextInput } from 'react-native-autogrow-textinput';
 import { connect } from 'react-redux';
-import { CardSection, Button } from './common';
+import { CardSection, Button, Spinner } from './common';
+import { pickerChange, itemDetailsChange, createItemAttempt } from '../actions';
 
 class EntryForm extends Component {
-  state = { event: '1', text: '' };
+  onItemPickerChange(item) {
+    this.props.pickerChange(item);
+  }
+
+  onItemDetailsChange(text) {
+    this.props.itemDetailsChange(text);
+  }
+
+  renderButton() {
+    if (!this.props.loading) {
+      const { itemType, itemDetails } = this.props;
+
+      return (
+        <Button
+          onPress={() => this.props.createItemAttempt(itemType, itemDetails)}
+        >
+          Create
+        </Button>
+      );
+    }
+
+    return <Spinner size='large' />;
+  }
 
   render() {
-    console.log(this.props.user);
     return (
       <View>
 
         <CardSection style={{ flexDirection: 'column' }}>
           <Text style={styles.labelStyles}>
-            Select Event
+            Select Item
           </Text>
           <Picker
               style={styles.pickerStyles}
-              selectedValue={this.state.event}
-              onValueChange={event => this.setState({ event })}
+              selectedValue={this.props.itemType}
+              onValueChange={item => this.onItemPickerChange(item)}
           >
               <Picker.Item label="didn't eat" color="red" value="1" />
               <Picker.Item label="didn't sleep" color="blue" value="2" />
@@ -34,14 +56,14 @@ class EntryForm extends Component {
           <AutoGrowingTextInput
             style={styles.inputStyles}
             placeholder={'Enter Details'}
+            onChangeText={text => this.onItemDetailsChange(text)}
+            value={this.props.itemDetails}
             underlineColorAndroid='transparent'
           />
         </View>
 
         <CardSection style={{ top: 280 }}>
-          <Button onPress={() => console.log('pressed')}>
-            Create
-          </Button>
+          {this.renderButton()}
         </CardSection>
 
       </View>
@@ -66,10 +88,12 @@ const styles = {
   }
 };
 
-const mapStateToProps = ({ auth }) => {
-  const { user } = auth;
+const mapStateToProps = ({ create }) => {
+  const { itemType, itemDetails, loading } = create;
 
-  return { user };
+  return { itemType, itemDetails, loading };
 };
 
-export default connect(mapStateToProps, null)(EntryForm);
+export default connect(mapStateToProps, {
+  pickerChange, itemDetailsChange, createItemAttempt
+})(EntryForm);

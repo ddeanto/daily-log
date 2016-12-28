@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "firebase": "^3.6.4",
+    "lodash": "^4.17.3",
     "react": "^15.4.1",
     "react-native": "^0.39.2",
     "react-native-autogrow-textinput": "^3.0.1",
