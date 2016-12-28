@@ -1,50 +1,30 @@
 import _ from 'lodash';
-import firebase from 'firebase';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { ListView, Text } from 'react-native';
+import { ListView } from 'react-native';
 import { itemsFetch } from '../actions';
-import { CardSection } from './common';
+import Item from './Item';
 // import ListItem from './ListItem';
 
 class ItemList extends Component {
-  state = { itemz: [1] }
-
-  colors = {
-    '1': 'red',
-    '2': 'green',
-    '3': 'blue'
-  }
-
   componentWillMount() {
-    const { currentUser } = firebase.auth();
-
-    firebase.database().ref(`/users/${currentUser.uid}/items`)
-      .on('value', snapshot => {
-        const a = snapshot.val();
-        const b = _.map(a, (x, y) => x);
-        // console.log( _.map(snapshot.val(), (x, y) => { ...x, y }) );
-        this.setState({ itemz: b });
-      });
+    this.props.itemsFetch();
   }
 
-  renderRow(item) {
-    // console.log(item);
-    return (
-      <CardSection>
-        <Text>{item.itemType}</Text>
-        <Text style={{ height: 20 }}>  {item.itemDetails}</Text>
-      </CardSection>
-    );
-  }
-
-  render() {
+  createDatasource() {
     const ds = new ListView.DataSource({
       rowHasChanged: (r1, r2) => r1 !== r2
     });
 
-    this.dataSource = ds.cloneWithRows(this.state.itemz);
+    this.dataSource = ds.cloneWithRows(this.props.items);
+  }
 
+  renderRow(item) {
+    return <Item item={item} />;
+  }
+
+  render() {
+    this.createDatasource();
     return (
       <ListView
         enableEmptySections
@@ -55,4 +35,12 @@ class ItemList extends Component {
   }
 }
 
-export default connect(null, { itemsFetch })(ItemList);
+const mapStateToProps = state => {
+  const items = _.map(state.items, (val, uid) => {
+    return { ...val, uid };
+  });
+
+  return { items };
+};
+
+export default connect(mapStateToProps, { itemsFetch })(ItemList);

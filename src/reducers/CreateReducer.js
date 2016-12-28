@@ -14,8 +14,6 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, loading: true };
     case 'create_item_success':
       return INITIAL_STATE;
-    case 'items_fetch_success':
-      return action.payload
     default:
       return state;
   }

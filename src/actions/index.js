@@ -72,6 +72,8 @@ export const createItemAttempt = (itemType, itemDetails) => {
   };
 };
 
+// -----------------------------------------------------------------------------
+
 export const itemsFetch = () => {
   const { currentUser } = firebase.auth();
 
