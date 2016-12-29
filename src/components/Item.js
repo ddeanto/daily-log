@@ -1,8 +1,9 @@
+import _ from 'lodash';
+import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import { Text, View, TouchableWithoutFeedback } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { CardSection } from './common';
-import itemConfig from '../ItemConfig';
 
 class Item extends Component {
   onItemPress() {
@@ -12,9 +13,15 @@ class Item extends Component {
   }
 
   color() {
-    const { item } = this.props;
+    const { item, itemsConfigged } = this.props;
 
-    return itemConfig(item.itemType);
+    for (let i = 0; i < itemsConfigged.length; i++) {
+      if (itemsConfigged[i].label === item.label) {
+        return itemsConfigged[i].color;
+      }
+    }
+
+    return 'green';
   }
 
   renderDate() {
@@ -26,7 +33,7 @@ class Item extends Component {
   renderTextDetails() {
     const { itemDetails } = this.props.item;
 
-    return itemDetails.substring(0, 30) + '...';
+    return itemDetails.substring(0, 20) + '...';
   }
 
   render() {
@@ -34,8 +41,11 @@ class Item extends Component {
       <TouchableWithoutFeedback onPress={() => this.onItemPress()}>
         <View style={styles.containerStyles}>
           <CardSection>
-            <Text style={{ color: this.color() }}>
+            <Text>
               {this.renderDate()}
+            </Text>
+            <Text style={{ color: this.color(), paddingLeft: 10 }}>
+              {this.props.item.label}
             </Text>
             <Text
               style={styles.textStyles}
@@ -52,8 +62,7 @@ class Item extends Component {
 const styles = {
   textStyles: {
     paddingLeft: 5,
-    height: 20,
-    color: 'black'
+    height: 20
   },
   containerStyles: {
     paddingTop: 5,
@@ -61,4 +70,12 @@ const styles = {
   }
 };
 
-export default Item;
+const mapStateToProps = ({ itemsConfig }) => {
+  const itemsConfigged = _.map(itemsConfig, (val, uid) => {
+    return { ...val, uid };
+  });
+
+  return { itemsConfigged };
+};
+
+export default connect(mapStateToProps)(Item);

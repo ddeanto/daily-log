@@ -77,7 +77,6 @@ export const createItemAttempt = (label, itemDetails) => {
 
 export const itemsFetch = () => {
   const { currentUser } = firebase.auth();
-
   return (dispatch) => {
     firebase.database().ref(`/users/${currentUser.uid}/items`)
       .on('value', snapshot => {
@@ -109,10 +108,12 @@ export const saveItem = (color, label) => {
 
 export const itemsConfigFetch = () => {
   const { currentUser } = firebase.auth();
-
   return (dispatch) => {
     firebase.database().ref(`/users/${currentUser.uid}/itemConfig`)
       .on('value', snapshot => {
+        if (snapshot.val()) {
+          dispatch({ type: 'init_first_picker', payload: Object.values(snapshot.val())[0].label });
+        }
         dispatch({ type: 'items_config_fetch_success', payload: snapshot.val() });
       });
   };

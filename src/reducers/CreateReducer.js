@@ -1,11 +1,13 @@
 const INITIAL_STATE = {
-  label: 'red',
+  label: '',
   details: '',
   loading: false
 };
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
+    case 'init_first_picker':
+      return { ...state, label: action.payload }
     case 'picker_change':
       return { ...state, label: action.payload };
     case 'item_details_change':

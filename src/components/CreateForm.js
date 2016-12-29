@@ -8,7 +8,6 @@ import { pickerChange, itemDetailsChange, createItemAttempt, addItem } from '../
 
 class EntryForm extends Component {
   onItemPickerChange(item) {
-    console.log(item);
     this.props.pickerChange(item);
   }
 
@@ -22,11 +21,9 @@ class EntryForm extends Component {
 
   renderPicker() {
     const { itemsConfigged } = this.props;
-    console.log(this.props);
 
     return (
       itemsConfigged.map(thing => {
-        // console.log(thing);
         return (
           <Picker.Item
             key={thing.label}
@@ -42,11 +39,11 @@ class EntryForm extends Component {
 
   renderButton() {
     if (!this.props.loading) {
-      const { itemType, itemDetails } = this.props;
+      const { label, details } = this.props;
 
       return (
         <Button
-          onPress={() => this.props.createItemAttempt(itemType, itemDetails)}
+          onPress={() => this.props.createItemAttempt(label, details)}
         >
           Create
         </Button>
@@ -132,7 +129,7 @@ const mapStateToProps = ({ create, itemsConfig }) => {
   const itemsConfigged = _.map(itemsConfig, (val, uid) => {
     return { ...val, uid };
   });
-  console.log(create);
+
   return { label, details, loading, itemsConfigged };
 };
 
