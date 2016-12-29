@@ -20,7 +20,7 @@ class Item extends Component {
   renderDate() {
     const { date } = this.props.item;
 
-    return date.substring(0, 15);
+    return date.substring(4, 21);
   }
 
   renderTextDetails() {
@@ -32,7 +32,7 @@ class Item extends Component {
   render() {
     return (
       <TouchableWithoutFeedback onPress={() => this.onItemPress()}>
-        <View>
+        <View style={styles.containerStyles}>
           <CardSection>
             <Text style={{ color: this.color() }}>
               {this.renderDate()}
@@ -54,6 +54,10 @@ const styles = {
     paddingLeft: 5,
     height: 20,
     color: 'black'
+  },
+  containerStyles: {
+    paddingTop: 5,
+    paddingBottom: 5
   }
 };
 

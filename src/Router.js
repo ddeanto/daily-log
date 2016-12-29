@@ -1,9 +1,10 @@
 import React from 'react';
 import { Scene, Router, Actions } from 'react-native-router-flux';
 import LoginForm from './components/LoginForm';
-import EntryForm from './components/EntryForm';
+import CreateForm from './components/CreateForm';
 import ItemList from './components/ItemList';
 import ItemView from './components/ItemView';
+import AddItem from './components/AddItem';
 
 const RouterComponent = () => {
   return (
@@ -23,7 +24,8 @@ const RouterComponent = () => {
           initial
         />
         <Scene key="itemView" component={ItemView} title="Item" />
-        <Scene key="entryForm" component={EntryForm} title="Add Entry" />
+        <Scene key="entryForm" component={CreateForm} title="Add Entry" />
+        <Scene key="addItem" component={AddItem} title="Add Item" />
       </Scene>
 
     </Router>

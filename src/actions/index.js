@@ -43,10 +43,10 @@ export const loginUserFail = (dispatch) => {
 
 // -----------------------------------------------------------------------------
 
-export const pickerChange = (itemValue) => {
+export const pickerChange = (label) => {
   return {
     type: 'picker_change',
-    payload: itemValue
+    payload: label
   };
 };
 
@@ -57,20 +57,21 @@ export const itemDetailsChange = (text) => {
   };
 };
 
-export const createItemAttempt = (itemType, itemDetails) => {
+export const createItemAttempt = (label, itemDetails) => {
   const { currentUser } = firebase.auth();
 
   return (dispatch) => {
     dispatch({ type: 'create_item_attempt' });
 
     firebase.database().ref(`/users/${currentUser.uid}/items`)
-      .push({ itemType, itemDetails, date: new Date().toString() })
+      .push({ label, itemDetails, date: new Date().toString() })
       .then(() => {
         dispatch({ type: 'create_item_success' });
         Actions.itemList();
       });
   };
 };
+
 
 // -----------------------------------------------------------------------------
 
@@ -81,6 +82,38 @@ export const itemsFetch = () => {
     firebase.database().ref(`/users/${currentUser.uid}/items`)
       .on('value', snapshot => {
         dispatch({ type: 'items_fetch_success', payload: snapshot.val() });
+      });
+  };
+};
+
+// -----------------------------------------------------------------------------
+
+export const addItem = () => {
+  return () => {
+    Actions.addItem();
+  };
+};
+
+export const saveItem = (color, label) => {
+  const { currentUser } = firebase.auth();
+
+  return () => {
+    firebase.database().ref(`/users/${currentUser.uid}/itemConfig`)
+      .push({ color, label })
+      .then(() => {
+        Actions.itemList();
+      })
+      .catch((error) => console.log(error));
+  };
+};
+
+export const itemsConfigFetch = () => {
+  const { currentUser } = firebase.auth();
+
+  return (dispatch) => {
+    firebase.database().ref(`/users/${currentUser.uid}/itemConfig`)
+      .on('value', snapshot => {
+        dispatch({ type: 'items_config_fetch_success', payload: snapshot.val() });
       });
   };
 };
