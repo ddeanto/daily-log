@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { ListView, StyleSheet } from 'react-native';
 import { itemsFetch, itemsConfigFetch } from '../actions';
 import Item from './Item';
-// import ListItem from './ListItem';
+import styles from '../Styles';
 
 class ItemList extends Component {
   componentWillMount() {
@@ -28,23 +28,14 @@ class ItemList extends Component {
     this.createDatasource();
     return (
       <ListView
+        automaticallyAdjustContentInsets={false}
         style={styles.containerStyles}
-        enableEmptySections
         dataSource={this.dataSource}
         renderRow={this.renderRow}
       />
     );
   }
 }
-
-const styles = StyleSheet.create({
-  containerStyles: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 50, 255, .3)',
-    paddingTop: 10,
-    marginTop: -11
-  }
-});
 
 const mapStateToProps = state => {
   const items = _.map(state.items, (val, uid) => {

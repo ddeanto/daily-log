@@ -3,8 +3,9 @@ import React, { Component } from 'react';
 import { Picker, Text, View, TouchableOpacity } from 'react-native';
 import { AutoGrowingTextInput } from 'react-native-autogrow-textinput';
 import { connect } from 'react-redux';
-import { CardSection, Button, Spinner } from './common';
+import { Button, Spinner, Input } from './common';
 import { pickerChange, itemDetailsChange, createItemAttempt, addItem } from '../actions';
+import styles from '../Styles';
 
 class EntryForm extends Component {
   onItemPickerChange(item) {
@@ -57,72 +58,53 @@ class EntryForm extends Component {
     return (
       <View style={styles.containerStyles}>
 
-        <CardSection style={{ flexDirection: 'column' }}>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Text style={styles.labelStyles}>Select Item</Text>
-            <TouchableOpacity style={{ left: 39 }} onPress={() => this.onAddItem()}>
-              <Text style={{ fontSize: 30, color: 'green' }}>+</Text>
-            </TouchableOpacity>
-          </View>
+          <View style={[styles.sectionContainerStyles, { height: undefined }]}>
 
-          <Picker
-              style={styles.pickerStyles}
-              selectedValue={this.props.label}
-              onValueChange={item => this.onItemPickerChange(item)}
-          >
-            {this.renderPicker()}
-          </Picker>
-        </CardSection>
+            <View style={{ flexDirection: 'row' }}>
+              <Text style={{ flex: 5 }}>Select Item</Text>
+              <TouchableOpacity style={{ flex: 3 }} onPress={() => this.onAddItem()}>
+                <Text style={{ fontSize: 20, color: 'green' }}>+ Add Item</Text>
+              </TouchableOpacity>
+            </View>
 
-        <View style={{ flexDirection: 'column', padding: 5 }}>
-          <Text style={styles.labelStyles}>
-            Enter Details
-          </Text>
-          <AutoGrowingTextInput
-            style={styles.inputStyles}
-            placeholder={'Enter Details'}
-            onChangeText={text => this.onItemDetailsChange(text)}
-            value={this.props.details}
-            underlineColorAndroid='transparent'
-          />
+            <View>
+              <Picker
+                  selectedValue={this.props.label}
+                  onValueChange={item => this.onItemPickerChange(item)}
+              >
+                {this.renderPicker()}
+              </Picker>
+            </View>
+
         </View>
 
-        <CardSection style={styles.buttonContainerStyles}>
+        <View style={[styles.sectionContainerStyles, { flex: 1, justifyContent: 'flex-start' }]}>
+
+          <View>
+            <Text>Enter Details</Text>
+          </View>
+
+          <View>
+              <AutoGrowingTextInput
+                multiline
+                style={{ borderColor: 'gray', borderWidth: 1, margin: 10, alignItems: 'stretch' }}
+                placeholder={'Enter Details'}
+                onChangeText={text => this.onItemDetailsChange(text)}
+                value={this.props.details}
+                underlineColorAndroid='transparent'
+              />
+          </View>
+
+        </View>
+
+        <View style={[styles.sectionContainerStyles, styles.loginButtonStyles]}>
           {this.renderButton()}
-        </CardSection>
+        </View>
 
       </View>
     );
   }
 }
-
-const styles = {
-  containerStyles: {
-    position: 'absolute',
-    top: 65,
-    bottom: 0,
-    left: 0,
-    right: 0
-  },
-  pickerStyles: {
-    left: 10,
-    width: 150
-  },
-  inputStyles: {
-    borderWidth: 1,
-    paddingLeft: 10,
-    paddingRight: 10,
-    margin: 10
-  },
-  labelStyles: {
-    paddingLeft: 10,
-    fontSize: 18
-  },
-  buttonContainerStyles: {
-    position: 'absolute',
-    bottom: 10
-  }
-};
 
 const mapStateToProps = ({ create, itemsConfig }) => {
   const { label, details, loading } = create;

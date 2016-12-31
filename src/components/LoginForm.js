@@ -5,6 +5,7 @@ import {
   emailChanged, passwordChanged, loginUserAttempt
 } from '../actions';
 import { Button, Input, Spinner } from './common';
+import styles from '../Styles';
 
 class LoginForm extends Component {
   onEmailChange(text) {
@@ -68,38 +69,6 @@ class LoginForm extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  containerStyles: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 50, 255, .3)',
-    paddingTop: 10,
-    marginTop: -11
-  },
-  errorTextStyles: {
-    fontSize: 20,
-    alignSelf: 'center',
-    color: 'red'
-  },
-  sectionContainerStyles: {
-    height: 50,
-    margin: 5,
-    marginLeft: 10,
-    marginRight: 10,
-    borderColor: 'rgba(0, 0, 0, .5)',
-    borderWidth: 1,
-    borderRadius: 5,
-    backgroundColor: 'rgb(190, 200, 190)',
-    justifyContent: 'center'
-  },
-  loginButtonStyles: {
-    width: 160,
-    height: 40,
-    marginTop: 10,
-    borderRadius: 10,
-    alignSelf: 'center'
-  }
-});
 
 const mapStateToProps = ({ auth }) => {
   const { email, password, error, loading } = auth;

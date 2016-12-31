@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import { Text, View, TouchableWithoutFeedback, StyleSheet } from 'react-native';
 import { Actions } from 'react-native-router-flux';
-import { CardSection } from './common';
+import styles from '../Styles';
 
 class Item extends Component {
   onItemPress() {
@@ -39,9 +39,9 @@ class Item extends Component {
   render() {
     return (
       <TouchableWithoutFeedback onPress={() => this.onItemPress()}>
-        <View style={styles.sectionContainerStyles}>
+        <View style={[styles.sectionContainerStyles, { height: undefined }]}>
 
-          <View style={styles.metaDataStyles}>
+          <View style={styles2.metaDataStyles}>
             <Text style={{ fontWeight: '500', color: this.color() }}>
               {this.props.item.label}
             </Text>
@@ -51,7 +51,7 @@ class Item extends Component {
             </Text>
           </View>
 
-          <View style={styles.textContainerStyles}>
+          <View style={styles2.textContainerStyles}>
             <Text style={styles.textStyles}>
               {this.renderTextDetails()}
             </Text>
@@ -63,17 +63,8 @@ class Item extends Component {
   }
 }
 
-const styles = StyleSheet.create({
-  sectionContainerStyles: {
-    margin: 5,
-    marginLeft: 10,
-    marginRight: 10,
-    borderColor: 'rgba(0, 0, 0, .5)',
-    borderWidth: 1,
-    borderRadius: 5,
-    backgroundColor: 'rgb(190, 200, 190)',
-    justifyContent: 'center',
-  },
+const styles2 = StyleSheet.create({
+
   metaDataStyles: {
     flexDirection: 'row',
     justifyContent: 'space-between',
