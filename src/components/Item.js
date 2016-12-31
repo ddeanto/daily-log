@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
-import { Text, View, TouchableWithoutFeedback } from 'react-native';
+import { Text, View, TouchableWithoutFeedback, StyleSheet } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { CardSection } from './common';
 
@@ -32,43 +32,61 @@ class Item extends Component {
 
   renderTextDetails() {
     const { itemDetails } = this.props.item;
-
-    return itemDetails.substring(0, 20) + '...';
+    return itemDetails;
+    // return itemDetails.substring(0, 340) + '...';
   }
 
   render() {
     return (
       <TouchableWithoutFeedback onPress={() => this.onItemPress()}>
-        <View style={styles.containerStyles}>
-          <CardSection>
-            <Text>
-              {this.renderDate()}
-            </Text>
-            <Text style={{ color: this.color(), paddingLeft: 10 }}>
+        <View style={styles.sectionContainerStyles}>
+
+          <View style={styles.metaDataStyles}>
+            <Text style={{ fontWeight: '500', color: this.color() }}>
               {this.props.item.label}
             </Text>
-            <Text
-              style={styles.textStyles}
-            >
+
+            <Text style={{ fontWeight: '500', color: 'rgb(80, 80, 80)' }}>
+              {this.renderDate()}
+            </Text>
+          </View>
+
+          <View style={styles.textContainerStyles}>
+            <Text style={styles.textStyles}>
               {this.renderTextDetails()}
             </Text>
-          </CardSection>
+          </View>
+
         </View>
       </TouchableWithoutFeedback>
     );
   }
 }
 
-const styles = {
-  textStyles: {
-    paddingLeft: 5,
-    height: 20
+const styles = StyleSheet.create({
+  sectionContainerStyles: {
+    margin: 5,
+    marginLeft: 10,
+    marginRight: 10,
+    borderColor: 'rgba(0, 0, 0, .5)',
+    borderWidth: 1,
+    borderRadius: 5,
+    backgroundColor: 'rgb(190, 200, 190)',
+    justifyContent: 'center',
   },
-  containerStyles: {
-    paddingTop: 5,
-    paddingBottom: 5
+  metaDataStyles: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingLeft: 10,
+    paddingRight: 10
+  },
+  textContainerStyles: {
+    padding: 5
+  },
+  textStyles: {
+    color: 'rgb(60, 60, 60)'
   }
-};
+});
 
 const mapStateToProps = ({ itemsConfig }) => {
   const itemsConfigged = _.map(itemsConfig, (val, uid) => {
